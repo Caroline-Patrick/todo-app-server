@@ -42,6 +42,20 @@ app.post('/users/', (req,res)=> {
  })
 });
 
+app.put('/users/:id', (req,res)=> {
+    // console.log(req.params.id)
+   const {id} = req.params;
+
+    pool.query(`UPDATE users SET ? WHERE id= ?`, 
+    //put whatever updates that come in from req.body; could be 1 or all (i.e.  email, name, etc.) where id=id coming in
+    [req.body, id],
+    function(err, rows, fields) {
+    
+    res.json(rows)
+ })
+
+});
+
 app.listen(PORT, ()=> console.log(`Listening @ http://localhost:${PORT}`));
 
 
