@@ -1,11 +1,15 @@
 const express = require("express");
 const app = express();
-
 const pool = require("./sql/connections")
+const userRoutes = require("./routes/users")
+
 const PORT = process.env.PORT || 5000;
 
 //need to add body parser as middlerware (body parser is part of express now, so don't need to install separately)
 app.use(express.json());
+
+//add app.use middleware to get call userRoutes (does all routes)
+app.use("/", userRoutes)
 
 //route is the '/', and ()=>{} function is the controller
 app.get('/', (req,res)=> {
@@ -13,61 +17,60 @@ app.get('/', (req,res)=> {
 
 });
 
-//get list of users
-app.get('/users', (req,res)=> {
-    pool.query("SELECT * FROM users", function(err, rows, fields) {
-    // Connection is automatically released when query resolves
-    res.json(rows)
- })
+// //get list of users
+// app.get('/users', (req,res)=> {
+//     pool.query("SELECT * FROM users", function(err, row, fields) {
+//     // Connection is automatically released when query resolves
+//     res.json(row)
+//  })
 
-});
+// });
 
-// get - user by id
-app.get('/users/:id', (req,res)=> {
-    // console.log(req.params.id)
-    const {id} = req.params
-    pool.query(`SELECT * FROM users WHERE id =${id}`, function(err, rows, fields) {
+// // get - user by id
+// app.get('/users/:id', (req,res)=> {
+//     // console.log(req.params.id)
+//     const {id} = req.params
+//     pool.query(`SELECT * FROM users WHERE id =${id}`, function(err, row, fields) {
     
-    res.json(rows)
- })
+//     res.json(row)
+//  })
 
-});
+// });
 
-app.post('/users/', (req,res)=> {
-    console.log(req.body)
-    // const {id} = req.params
-    pool.query(`INSERT INTO users(id, name, email, password) VALUES (?, ?, ?, ?)`, [null, req.body.name, req.body.email, req.body.password], function(err, row, fields) {
+// app.post('/users/', (req,res)=> {
+//     console.log(req.body)
+//     // const {id} = req.params
+//     pool.query(`INSERT INTO users(id, name, email, password) VALUES (?, ?, ?, ?)`, [null, req.body.name, req.body.email, req.body.password], function(err, row, fields) {
     
-    res.json(row)
- })
-});
+//     res.json(row)
+//  })
+// });
 
-app.put('/users/:id', (req,res)=> {
-    // console.log(req.params.id)
-   const {id} = req.params;
+// app.put('/users/:id', (req,res)=> {
+//     // console.log(req.params.id)
+//    const {id} = req.params;
 
-    pool.query(`UPDATE users SET ? WHERE id= ?`, 
-    //put whatever updates that come in from req.body; could be 1 or all (i.e.  email, name, etc.) where id=id coming in
-    [req.body, id],
-    function(err, rows, fields) {
+//     pool.query(`UPDATE users SET ? WHERE id= ?`, 
+//     //put whatever updates that come in from req.body; could be 1 or all (i.e.  email, name, etc.) where id=id coming in
+//     [req.body, id],
+//     function(err, row, fields) {
     
-    res.json(rows)
- });
-});
+//     res.json(row)
+//  });
+// });
 
 
-app.delete('/users/:id', (req,res)=> {
-    // console.log(req.params.id)
-   const {id} = req.params;
+// app.delete('/users/:id', (req,res)=> {
+//     // console.log(req.params.id)
+//    const {id} = req.params;
 
-    pool.query(`DELETE FROM users WHERE id= ?`, 
-    //put whatever updates that come in from req.body; could be 1 or all (i.e.  email, name, etc.) where id=id coming in
-    [id],
-    function(err, rows, fields) {
-    
-    res.json(rows)
- });
-});
+//     pool.query(`DELETE FROM users WHERE id= ?`, 
+//     //put whatever updates that come in from req.body; could be 1 or all (i.e.  email, name, etc.) where id=id coming in
+//     [id],
+//     function(err, row, fields) {
+//     res.json(row)
+//  });
+// });
 
 app.listen(PORT, ()=> console.log(`Listening @ http://localhost:${PORT}`));
 
