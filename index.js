@@ -52,8 +52,21 @@ app.put('/users/:id', (req,res)=> {
     function(err, rows, fields) {
     
     res.json(rows)
- })
+ });
+});
 
+
+app.delete('/users/:id', (req,res)=> {
+    // console.log(req.params.id)
+   const {id} = req.params;
+
+    pool.query(`DELETE FROM users WHERE id= ?`, 
+    //put whatever updates that come in from req.body; could be 1 or all (i.e.  email, name, etc.) where id=id coming in
+    [id],
+    function(err, rows, fields) {
+    
+    res.json(rows)
+ });
 });
 
 app.listen(PORT, ()=> console.log(`Listening @ http://localhost:${PORT}`));
