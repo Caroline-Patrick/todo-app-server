@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
-const pool = require("./sql/connections")
-const userRoutes = require("./routes/users")
-const todosRoutes = require("./routes/todos")
-const signupRoutes= require("./routes/signup")
+const pool = require("./sql/connections");
+const userRoutes = require("./routes/users");
+const todosRoutes = require("./routes/todos");
+const signupRoutes= require("./routes/signup");
+const signinRoutes = require("./routes/signin");
+
 const PORT = process.env.PORT || 5000;
 
 //need to add body parser as middlerware (body parser is part of express now, so don't need to install separately)
@@ -13,6 +15,7 @@ app.use(express.json());
 app.use("/", userRoutes);
 app.use("/", todosRoutes);
 app.use("/", signupRoutes);
+app.use("/", signinRoutes)
 
 //route is the '/', and ()=>{} function is the controller
 app.get('/', (req,res)=> {
