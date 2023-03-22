@@ -1,6 +1,9 @@
 const bcrypt =require('bcrypt');
 const pool = require('../sql/connections')
 
+
+//signup fxn must be asynchronous, because bcrypt returns a promise
+
 const signup = async (req, res) => {
     const{name, email, password} =req.body;
     
