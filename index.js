@@ -18,9 +18,9 @@ const authenticateToken=(req, res, next) => {
     const authHeader = req.headers.authorization;
     // console.log({auth: authHeader})
 
-    if(!authHeader) return res.sendStatus(403);
+   
     //take the Bearer token (if it exists) and split it at the space and then take the 2nd item in array
-    const token = authHeader.split(' ')[1];
+    const token = authHeader && authHeader.split(' ')[1];
     console.log(token);
 
     //error 403 (not found) sent
@@ -32,8 +32,11 @@ const authenticateToken=(req, res, next) => {
         if(err) return res.sendStatus( 403);
 
         // add property called user to the request object
-        console.log({user})
+        // console.log({user})
+        console.log(req)
         req.user = user;
+
+        console.log("req.user" + req.user)
     });
 
     next();
