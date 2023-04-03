@@ -11,11 +11,11 @@ const pool = require('../sql/connections')
 const list =(req,res)=> {
     // console.log('req user: '+ req.user);
     const {id} = req.user;
-    console.log(id)
+    // console.log(id)
     pool.query(
         `SELECT * FROM todos WHERE user_id =${id}`, 
         function(err, row, fields) {
-    res.json(row)
+    res.json({row, user: id})
  });
 };
 
